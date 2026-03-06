@@ -10,9 +10,23 @@
             <x-app-logo href="{{ route('dashboard') }}" wire:navigate />
 
             <flux:navbar class="-mb-px max-lg:hidden">
-                <flux:navbar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-                    {{ __('Dashboard') }}
-                </flux:navbar.item>
+                @unless(auth()->user()->isAdmin())
+                    <flux:navbar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+                        {{ __('Home') }}
+                    </flux:navbar.item>
+                    <flux:navbar.item icon="identification" :href="route('student.registrations')" :current="request()->routeIs('student.registrations')" wire:navigate>
+                        {{ __('My Registrations') }}
+                    </flux:navbar.item>
+                @endunless
+
+                @if(auth()->user()->isAdmin())
+                    <flux:navbar.item icon="calendar" :href="route('dashboard')" :current="false" wire:navigate>
+                        {{ __('Manage Workshop') }}
+                    </flux:navbar.item>
+                    <flux:navbar.item icon="users" :href="route('admin.users')" :current="request()->routeIs('admin.users')" wire:navigate>
+                        {{ __('Manage Users') }}
+                    </flux:navbar.item>
+                @endif
             </flux:navbar>
 
             <flux:spacer />
@@ -52,11 +66,27 @@
             </flux:sidebar.header>
 
             <flux:sidebar.nav>
-                <flux:sidebar.group :heading="__('Platform')">
+                <flux:sidebar.group>
+                @unless(auth()->user()->isAdmin())
                     <flux:sidebar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dashboard')  }}
+                        {{ __('Home') }}
                     </flux:sidebar.item>
+                    <flux:sidebar.item icon="identification" :href="route('student.registrations')" :current="request()->routeIs('student.registrations')" wire:navigate>
+                        {{ __('My Registrations') }}
+                    </flux:sidebar.item>
+                @endunless
                 </flux:sidebar.group>
+
+                @if(auth()->user()->isAdmin())
+                    <flux:sidebar.group :heading="__('Manage')">
+                        <flux:sidebar.item icon="calendar" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+                            {{ __('Manage Workshop') }}
+                        </flux:sidebar.item>
+                        <flux:sidebar.item icon="users" :href="route('admin.users')" :current="request()->routeIs('admin.users')" wire:navigate>
+                            {{ __('Manage Users') }}
+                        </flux:sidebar.item>
+                    </flux:sidebar.group>
+                @endif
             </flux:sidebar.nav>
 
             <flux:spacer />

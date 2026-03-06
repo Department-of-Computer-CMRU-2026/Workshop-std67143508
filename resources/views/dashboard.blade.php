@@ -1,6 +1,6 @@
-<x-layouts::app :title="__('Dashboard')">
+<x-layouts::app :title="__('Home')">
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
-        @if(auth()->user()->email === 'admin@example.com')
+        @if(auth()->user()->isAdmin())
             <livewire:admin-dashboard />
         @else
             <livewire:student-dashboard />

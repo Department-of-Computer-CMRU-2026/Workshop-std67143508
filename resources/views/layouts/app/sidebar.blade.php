@@ -11,11 +11,27 @@
             </flux:sidebar.header>
 
             <flux:sidebar.nav>
-                <flux:sidebar.group :heading="__('Platform')" class="grid">
+                <flux:sidebar.group class="grid">
+                @unless(auth()->user()->isAdmin())
                     <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dashboard') }}
+                        {{ __('Home') }}
                     </flux:sidebar.item>
+                    <flux:sidebar.item icon="identification" :href="route('student.registrations')" :current="request()->routeIs('student.registrations')" wire:navigate>
+                        {{ __('My Registrations') }}
+                    </flux:sidebar.item>
+                @endunless
                 </flux:sidebar.group>
+
+                @if(auth()->user()->isAdmin())
+                    <flux:sidebar.group :heading="__('Manage')" class="grid">
+                        <flux:sidebar.item icon="calendar" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+                            {{ __('Manage Workshop') }}
+                        </flux:sidebar.item>
+                        <flux:sidebar.item icon="users" :href="route('admin.users')" :current="request()->routeIs('admin.users')" wire:navigate>
+                            {{ __('Manage Users') }}
+                        </flux:sidebar.item>
+                    </flux:sidebar.group>
+                @endif
             </flux:sidebar.nav>
 
             <flux:spacer />
